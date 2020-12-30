@@ -1,0 +1,201 @@
+<template>
+	<div class="text-center">
+		<v-dialog v-model="dialog" width="400">
+			<template v-slot:activator="{ on, attrs }">
+				<v-btn
+					class="ma-2"
+					outlined
+					color="blue"
+					v-bind="attrs"
+					v-on="on"
+				>
+					Sign up
+				</v-btn>
+			</template>
+
+			<v-card>
+				<div class="pa-3">
+					<h1>Sign Up</h1>
+					<p><i>Easy and quickly!</i></p>
+				</div>
+				<v-form>
+					<v-container>
+						<v-row>
+							<v-col cols="12" class="py-0">
+								<v-text-field
+									label="Email"
+									outlined
+								></v-text-field>
+							</v-col>
+						</v-row>
+						<v-row>
+							<v-col cols="12" class="py-0">
+								<v-text-field
+									label="Password"
+									type="password"
+									outlined
+								></v-text-field>
+							</v-col>
+						</v-row>
+						<v-row>
+							<v-col cols="12" class="py-0">
+								<v-text-field
+									label="Re-Enter password"
+									type="password"
+									outlined
+								></v-text-field>
+							</v-col>
+						</v-row>
+						<v-row>
+							<v-col cols="12">
+								<v-btn
+									block
+									class="py-2"
+									:loading="loading"
+									:disabled="loading"
+									color="success"
+									@click="loader = 'loading'"
+								>
+									Sign up
+									<template v-slot:loader>
+										<span class="custom-loader">
+											<v-icon light>mdi-cached</v-icon>
+										</span>
+									</template>
+								</v-btn>
+							</v-col>
+						</v-row>
+						<v-row class="justify-center pt-6 pb-4 px-3">
+							<h3 class="line-decorator">
+								<span>OR</span>
+							</h3>
+						</v-row>
+						<v-row class="justify-space-around">
+							<v-col
+								v-for="loginData in ortherLoginData"
+								:key="loginData.img"
+								class="col-3"
+							>
+								<v-btn
+									class="mx-2"
+									fab
+									outlined
+									width="66"
+									height="66"
+									:color="loginData.roudedColor"
+								>
+									<img
+										:src="loginData.img"
+										width="56px"
+										height="56px"
+									/>
+								</v-btn>
+							</v-col>
+						</v-row>
+					</v-container>
+				</v-form>
+			</v-card>
+		</v-dialog>
+	</div>
+</template>
+
+<script>
+export default {
+	name: "SignUpComponent",
+	data() {
+		return {
+			loader: null,
+			loading: false,
+			ortherLoginData: [
+				{
+					img: require("@/assets/facebook.png"),
+					link: "facebook.com",
+					roudedColor: "light-blue darken-4"
+				},
+				{
+					img: require("@/assets/google.png"),
+					link: "google.com",
+					roudedColor: "orange darken-4"
+				},
+				{
+					img: require("@/assets/github.png"),
+					link: "github.com",
+					roudedColor: "black"
+				}
+			]
+		};
+	},
+	watch: {
+		loader() {
+			const l = this.loader;
+			this[l] = !this[l];
+
+			setTimeout(() => (this[l] = false), 3000);
+
+			this.loader = null;
+		}
+	}
+};
+</script>
+
+<style scoped lang="scss">
+.custom-text-field.v-text-field.v-text-field--enclosed .v-input__slot {
+	padding: 0;
+	margin: 0;
+}
+
+.col-12 {
+	margin: 0;
+	padding: 0 12px;
+}
+
+.custom-loader {
+	animation: loader 1s infinite;
+	display: flex;
+}
+
+.line-decorator {
+	width: 100%;
+	text-align: center;
+	border-bottom: 1px solid lightgray;
+	line-height: 0.1em;
+
+	span {
+		background: #fff;
+		padding: 0 10px;
+	}
+}
+
+@-moz-keyframes loader {
+	from {
+		transform: rotate(0);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@-webkit-keyframes loader {
+	from {
+		transform: rotate(0);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@-o-keyframes loader {
+	from {
+		transform: rotate(0);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes loader {
+	from {
+		transform: rotate(0);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+</style>
