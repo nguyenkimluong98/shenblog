@@ -11,7 +11,7 @@
 				<v-form>
 					<v-container>
 						<v-row>
-							<v-col cols="12" class="py-0">
+							<v-col cols="12" class="pt-3">
 								<v-text-field
 									label="Email"
 									outlined
@@ -22,14 +22,15 @@
 							<v-col cols="12" class="py-0">
 								<v-text-field
 									hint="Password at least 8 characters"
-									value="Pa"
+									:value="password"
 									label="Password"
 									type="password"
 									outlined
+									
 								></v-text-field>
 							</v-col>
 						</v-row>
-						<v-row>
+						<v-row class="pt-3">
 							<v-col cols="12">
 								<v-btn
 									block
@@ -48,19 +49,23 @@
 								</v-btn>
 							</v-col>
 						</v-row>
-						<v-row class="justify-center py-4">
-							<a
+						<v-row class="justify-center py-6">
+							
+								<a
 								class="align-center"
 								style="text-decoration: none;"
 								href="#"
 								>Forgot password?</a
 							>
+							
 						</v-row>
 						<v-divider></v-divider>
-						<v-row class="justify-center py-4">
-							<v-btn color="success" dark>
+						<v-row align="center" class="justify-center py-6">
+							
+								<v-btn  color="success" dark>
 								Sign up
 							</v-btn>
+							
 						</v-row>
 					</v-container>
 				</v-form>
@@ -75,7 +80,8 @@ export default {
 	data() {
 		return {
 			loader: null,
-			loading: false
+			loading: false,
+			password: ""
 		};
 	},
 	watch: {
