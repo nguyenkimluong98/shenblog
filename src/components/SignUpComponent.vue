@@ -46,7 +46,7 @@
 								></v-text-field>
 							</v-col>
 						</v-row>
-						<v-row  class="pb-4">
+						<v-row class="pb-4">
 							<v-col cols="12">
 								<v-btn
 									block
@@ -68,8 +68,8 @@
 						<v-row class="justify-center py-4 px-3">
 							<v-col>
 								<h3 class="line-decorator">
-								<span>OR</span>
-							</h3>
+									<span>OR</span>
+								</h3>
 							</v-col>
 						</v-row>
 						<v-row class="justify-space-around">
@@ -108,6 +108,7 @@ export default {
 		return {
 			loader: null,
 			loading: false,
+			dialog: false,
 			ortherLoginData: [
 				{
 					img: require("@/assets/facebook.png"),

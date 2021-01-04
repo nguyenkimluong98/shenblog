@@ -1,6 +1,6 @@
 <template>
 	<div class="text-center">
-		<v-dialog v-model="dialog" width="400">
+		<v-dialog persistent v-model="dialog" width="400">
 			<template v-slot:activator="{ on, attrs }">
 				<v-btn color="blue" text v-bind="attrs" v-on="on">
 					Sign in
@@ -8,12 +8,21 @@
 			</template>
 
 			<v-card>
+				<v-row class="mx-0 py-1">
+					<v-col cols="12" align="end">
+						<button class="my-3" @click.stop="closeDialog()">
+							<v-icon>close</v-icon>
+						</button>
+					</v-col>
+				</v-row>
 				<v-form>
 					<v-container>
-						<v-row>
-							<v-col cols="12" class="pt-3">
+						<v-row class="mb-2">
+							<v-col cols="12">
 								<v-text-field
 									label="Email"
+									:rules="[rules.required, rules.emailMatch]"
+									v-model="email"
 									outlined
 								></v-text-field>
 							</v-col>
@@ -21,12 +30,11 @@
 						<v-row>
 							<v-col cols="12" class="py-0">
 								<v-text-field
-									hint="Password at least 8 characters"
-									:value="password"
+									v-model="password"
+									:rules="[rules.min]"
 									label="Password"
 									type="password"
 									outlined
-									
 								></v-text-field>
 							</v-col>
 						</v-row>
@@ -50,22 +58,18 @@
 							</v-col>
 						</v-row>
 						<v-row class="justify-center py-6">
-							
-								<a
+							<a
 								class="align-center"
 								style="text-decoration: none;"
 								href="#"
 								>Forgot password?</a
 							>
-							
 						</v-row>
 						<v-divider></v-divider>
 						<v-row align="center" class="justify-center py-6">
-							
-								<v-btn  color="success" dark>
+							<v-btn color="success" dark>
 								Sign up
 							</v-btn>
-							
 						</v-row>
 					</v-container>
 				</v-form>
@@ -75,13 +79,22 @@
 </template>
 
 <script>
+import _ from "lodash";
+
 export default {
 	name: "SignInComponent",
 	data() {
 		return {
 			loader: null,
 			loading: false,
-			password: ""
+			password: "",
+			dialog: false,
+			email: "",
+			rules: {
+				required: value => !!value || "Required.",
+				min: v => v.length >= 6 || "Min 6 characters",
+				emailMatch: () => ""
+			}
 		};
 	},
 	watch: {
@@ -92,9 +105,44 @@ export default {
 			setTimeout(() => (this[l] = false), 3000);
 
 			this.loader = null;
+		},
+		email() {
+			this.rules.emailMatch = "";
+
+			let checkEmail = function(context) {
+				return (
+					context.checkEmailValid(context.email) ||
+					`The email is invalid`
+				);
+			};
+
+			// console.log(checkEmail(this));
+
+			let debounce = _.debounce(function() {
+				// this.rules.emailMatch = checkEmail(this);
+				console.log(checkEmail(this));
+			}, 500);
+
+			debounce();
 		}
+	},
+	methods: {
+		closeDialog,
+		checkEmailValid
 	}
 };
+
+function checkEmailValid(email) {
+	console.log("vao test");
+	let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/;
+	return emailRegex.test(email);
+}
+
+function closeDialog() {
+	this.dialog = false;
+	this.password = "";
+	this.email = "";
+}
 </script>
 
 <style scoped>
