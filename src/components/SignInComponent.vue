@@ -10,7 +10,7 @@
 			<v-card>
 				<v-row class="mx-0 py-1">
 					<v-col cols="12" align="end">
-						<button class="my-3" @click.stop="closeDialog()">
+						<button class="my-3" @click.stop="closeDialog">
 							<v-icon>close</v-icon>
 						</button>
 					</v-col>
@@ -21,7 +21,7 @@
 							<v-col cols="12">
 								<v-text-field
 									label="Email"
-									:rules="[rules.required, rules.emailMatch]"
+									:rules="ruleEmails"
 									v-model="email"
 									outlined
 								></v-text-field>
@@ -31,7 +31,7 @@
 							<v-col cols="12" class="py-0">
 								<v-text-field
 									v-model="password"
-									:rules="[rules.min]"
+									:rules="rulePasswords"
 									label="Password"
 									type="password"
 									outlined
@@ -82,7 +82,6 @@
 import _ from "lodash";
 
 export default {
-	name: "SignInComponent",
 	data() {
 		return {
 			loader: null,
@@ -93,8 +92,11 @@ export default {
 			rules: {
 				required: value => !!value || "Required.",
 				min: v => v.length >= 6 || "Min 6 characters",
-				emailMatch: () => ""
-			}
+				emailMatch: () =>
+					this.checkEmailValid(this.email) || `The email is invalid`
+			},
+			ruleEmails: [],
+			rulePasswords: []
 		};
 	},
 	watch: {
@@ -107,42 +109,49 @@ export default {
 			this.loader = null;
 		},
 		email() {
-			this.rules.emailMatch = "";
+			this.ruleEmails = [];
 
-			let checkEmail = function(context) {
-				return (
-					context.checkEmailValid(context.email) ||
-					`The email is invalid`
-				);
-			};
-
-			// console.log(checkEmail(this));
-
-			let debounce = _.debounce(function() {
-				// this.rules.emailMatch = checkEmail(this);
-				console.log(checkEmail(this));
+			let debounce = _.debounce(() => {
+				if (this.dialog)
+					this.ruleEmails = [
+						this.rules.required,
+						this.rules.emailMatch
+					];
 			}, 500);
 
 			debounce();
+		},
+		password(value) {
+			if (value.length > 0) {
+				console.log(value);
+				this.rulePasswords = [];
+
+				let debounce = _.debounce(() => {
+					if (this.dialog)
+						this.rulePasswords = [
+							this.rules.required,
+							this.rules.min
+						];
+				}, 500);
+
+				debounce();
+			}
 		}
 	},
 	methods: {
-		closeDialog,
-		checkEmailValid
+		checkEmailValid(email) {
+			let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/;
+			return emailRegex.test(email);
+		},
+		closeDialog() {
+			this.dialog = false;
+			this.password = "";
+			this.email = "";
+			this.ruleEmails = [];
+			this.rulePasswords = [];
+		}
 	}
 };
-
-function checkEmailValid(email) {
-	console.log("vao test");
-	let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/;
-	return emailRegex.test(email);
-}
-
-function closeDialog() {
-	this.dialog = false;
-	this.password = "";
-	this.email = "";
-}
 </script>
 
 <style scoped>
