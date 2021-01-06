@@ -21,27 +21,33 @@
 				<v-form>
 					<v-container>
 						<v-row>
-							<v-col cols="12" class="py-0">
+							<v-col cols="12" class="py-1">
 								<v-text-field
 									label="Email"
+									v-model="email"
+									:rules="ruleEmails"
 									outlined
 								></v-text-field>
 							</v-col>
 						</v-row>
 						<v-row>
-							<v-col cols="12" class="py-0">
+							<v-col cols="12" class="py-1">
 								<v-text-field
 									label="Password"
 									type="password"
+									v-model="password"
+									:rules="rulePasswords"
 									outlined
 								></v-text-field>
 							</v-col>
 						</v-row>
 						<v-row>
-							<v-col cols="12" class="py-0">
+							<v-col cols="12" class="py-1">
 								<v-text-field
 									label="Re-Enter password"
 									type="password"
+									v-model="rePassword"
+									:rules="ruleRePasswords"
 									outlined
 								></v-text-field>
 							</v-col>
@@ -102,13 +108,28 @@
 </template>
 
 <script>
+import _ from "lodash";
+
 export default {
-	name: "SignUpComponent",
 	data() {
 		return {
 			loader: null,
 			loading: false,
 			dialog: false,
+			email: "",
+			password: "",
+			rePassword: "",
+			rules: {
+				required: value => !!value || "Required",
+				min: v => v.length >= 6 || "Min 6 characters",
+				emailMatch: () =>
+					this.checkEmailValid(this.email) || "The email is invalid",
+				reEnterPassword: rePass =>
+					rePass == this.password || "Re-Password not match"
+			},
+			ruleEmails: [],
+			rulePasswords: [],
+			ruleRePasswords: [],
 			ortherLoginData: [
 				{
 					img: require("@/assets/facebook.png"),
@@ -136,6 +157,64 @@ export default {
 			setTimeout(() => (this[l] = false), 3000);
 
 			this.loader = null;
+		},
+		email() {
+			this.ruleEmails = [];
+
+			let debounce = _.debounce(() => {
+				if (this.dialog)
+					this.ruleEmails = [
+						this.rules.required,
+						this.rules.emailMatch
+					];
+			}, 500);
+
+			debounce();
+		},
+		password(value) {
+			if (value.length > 0) {
+				this.rulePasswords = [];
+
+				let debounce = _.debounce(() => {
+					if (this.dialog)
+						this.rulePasswords = [
+							this.rules.required,
+							this.rules.min
+						];
+				}, 500);
+
+				debounce();
+			}
+		},
+		rePassword(value) {
+			if (value.length > 0) {
+				this.ruleRePasswords = [];
+
+				let debounce = _.debounce(() => {
+					if (this.dialog)
+						this.ruleRePasswords = [
+							this.rules.required,
+							this.rules.reEnterPassword
+						];
+				}, 500);
+
+				debounce();
+			}
+		}
+	},
+	methods: {
+		checkEmailValid(email) {
+			let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/;
+			return emailRegex.test(email);
+		},
+		closeDialog() {
+			this.dialog = false;
+			this.email = "";
+			this.password = "";
+			this.rePassword = "";
+			this.ruleEmails = [];
+			this.rulePasswords = [];
+			this.ruleRePasswords = [];
 		}
 	}
 };
