@@ -7,6 +7,7 @@ Vue.use(VueRouter);
 const routes = [
 	{
 		path: "/",
+		alias: "/home",
 		name: "DashBoard",
 		component: DashBoard
 	},
@@ -29,12 +30,6 @@ const routes = [
 			import(
 				/* webpackChunkName: "discussions" */ "../views/Discussions.vue"
 			)
-	},
-	{
-		path: "/updates",
-		name: "Updates",
-		component: () =>
-			import(/* webpackChunkName: "updates" */ "../views/Updates.vue")
 	}
 ];
 

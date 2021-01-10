@@ -1,12 +1,10 @@
 <template>
-	<div id="app">
-		<v-app>
-			<AppBar />
-			<v-content>
-				<router-view />
-			</v-content>
-		</v-app>
-	</div>
+	<v-app>
+		<AppBar />
+		<v-content>
+			<router-view />
+		</v-content>
+	</v-app>
 </template>
 
 <script>
@@ -17,9 +15,7 @@ export default {
 		AppBar
 	},
 
-	data: () => ({
-		//
-	})
+	data: () => ({})
 };
 </script>
 

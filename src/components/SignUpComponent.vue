@@ -1,6 +1,6 @@
 <template>
 	<div class="text-center">
-		<v-dialog v-model="dialog" width="400">
+		<v-dialog persistent v-model="dialog" width="400">
 			<template v-slot:activator="{ on, attrs }">
 				<v-btn
 					class="ma-2"
@@ -14,10 +14,18 @@
 			</template>
 
 			<v-card>
-				<div class="pa-3">
-					<h1>Sign Up</h1>
-					<p><i>Easy and quickly!</i></p>
-				</div>
+				<v-row class="d-flex justify-space-between pa-3 mx-0 py-1">
+					<v-col>
+						<h1>Sign Up</h1>
+						<p><i>Easy and quickly!</i></p>
+					</v-col>
+					<div class="pt-5">
+						<button @click.stop="closeDialog">
+							<v-icon>close</v-icon>
+						</button>
+					</div>
+				</v-row>
+
 				<v-form>
 					<v-container>
 						<v-row>
@@ -246,6 +254,10 @@ export default {
 		background: #fff;
 		padding: 0 10px;
 	}
+}
+
+.theme--light.v-btn:focus::before {
+	opacity: 0;
 }
 
 @-moz-keyframes loader {

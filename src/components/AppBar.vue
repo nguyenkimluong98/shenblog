@@ -1,13 +1,13 @@
 <template>
 	<v-app-bar app color="white" flat>
 		<v-container class="py-0 fill-height justify-center">
-			<router-link to="/">
+			<router-link to="/home">
 				<div class="logo-box">
 					<span class="red--text text--accent-4 font-weight-bold logo"
-						>shen</span
+						>lēng</span
 					>
 					<span class="blue--text text--darken font-weight-bold logo"
-						>Blog</span
+						>Min</span
 					>
 				</div>
 			</router-link>
@@ -47,8 +47,7 @@ export default {
 		tabs: [
 			{ name: "Posts", link: "/posts" },
 			{ name: "Questions", link: "/questions" },
-			{ name: "Discussions", link: "/discussions" },
-			{ name: "Updates", link: "/updates" }
+			{ name: "Discussions", link: "/discussions" }
 		]
 	}),
 	components: {

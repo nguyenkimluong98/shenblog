@@ -8,12 +8,15 @@
 			</template>
 
 			<v-card>
-				<v-row class="mx-0 py-1">
-					<v-col cols="12" align="end">
-						<button class="my-3" @click.stop="closeDialog">
+				<v-row class="d-flex justify-space-between pa-3 mx-0">
+					<v-col>
+						<h1>Login</h1>
+					</v-col>
+					<div class="pt-5">
+						<button @click.stop="closeDialog">
 							<v-icon>close</v-icon>
 						</button>
-					</v-col>
+					</div>
 				</v-row>
 				<v-form>
 					<v-container>
@@ -64,12 +67,6 @@
 								href="#"
 								>Forgot password?</a
 							>
-						</v-row>
-						<v-divider></v-divider>
-						<v-row align="center" class="justify-center py-6">
-							<v-btn color="success" dark>
-								Sign up
-							</v-btn>
 						</v-row>
 					</v-container>
 				</v-form>
@@ -165,10 +162,15 @@ export default {
 	padding: 0 12px;
 }
 
+.theme--light.v-btn:focus::before {
+	opacity: 0;
+}
+
 .custom-loader {
 	animation: loader 1s infinite;
 	display: flex;
 }
+
 @-moz-keyframes loader {
 	from {
 		transform: rotate(0);
